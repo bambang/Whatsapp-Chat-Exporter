@@ -114,13 +114,15 @@ def extract_media(base_dir):
                 hashes = row[0]
                 folder = hashes[:2]
                 flags = row[2]
+                os.makedirs(os.path.dirname(destination), exist_ok=True)
                 if flags == 2:
                     try:
                         os.mkdir(destination)
                     except FileExistsError:
                         pass
                 elif flags == 1:
-                    shutil.copyfile(f"{base_dir}/{folder}/{hashes}", destination)
+                    if (not os.path.isfile(destination)):
+                        shutil.copyfile(f"{base_dir}/{folder}/{hashes}", destination)
                 i += 1
                 if i % 100 == 0:
                     print(f"Gathering media...({i}/{total_row_number})", end="\r")
@@ -133,4 +135,4 @@ if __name__ == "__main__":
     parser = OptionParser()
     (_, args) = parser.parse_args()
     base_dir = args[0]
-    extract_media(base_dir)
+    # extract_media(base_dir)
