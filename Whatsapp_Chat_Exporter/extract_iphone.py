@@ -214,6 +214,8 @@ def vcard(db, data):
     if not os.path.isdir(base):
         Path(base).mkdir(parents=True, exist_ok=True)
     for index, row in enumerate(rows):
+        if (row[3] is None):
+            continue
         file_name = "".join(x for x in row[3] if x.isalnum())
         file_path = f"{base}/{file_name[:200]}.vcf"
         if not os.path.isfile(file_path):
@@ -319,8 +321,8 @@ if __name__ == "__main__":
 
     if os.path.isfile(msg_db):
         with sqlite3.connect(msg_db) as db:
-            messages(db, data)
-            media(db, data, media_folder)
+            # messages(db, data)
+            # media(db, data, media_folder)
             vcard(db, data)
         create_html(data, output_folder)
 
